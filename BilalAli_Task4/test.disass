@@ -1,0 +1,107 @@
+
+test.elf:     file format elf32-littleriscv
+
+
+Disassembly of section .text.init:
+
+80000000 <_start>:
+80000000:	300022f3          	csrr	t0,mstatus
+80000004:	ffffa337          	lui	t1,0xffffa
+80000008:	fff30313          	addi	t1,t1,-1 # ffff9fff <_end+0x7fff8fb7>
+8000000c:	0062f2b3          	and	t0,t0,t1
+80000010:	30029073          	csrw	mstatus,t0
+80000014:	300023f3          	csrr	t2,mstatus
+80000018:	00d3de13          	srli	t3,t2,0xd
+8000001c:	003e7e13          	andi	t3,t3,3
+80000020:	00000e93          	li	t4,0
+80000024:	07de1e63          	bne	t3,t4,800000a0 <fail_fs_clean>
+80000028:	01f3df13          	srli	t5,t2,0x1f
+8000002c:	060f1a63          	bnez	t5,800000a0 <fail_fs_clean>
+80000030:	300022f3          	csrr	t0,mstatus
+80000034:	ffffa337          	lui	t1,0xffffa
+80000038:	fff30313          	addi	t1,t1,-1 # ffff9fff <_end+0x7fff8fb7>
+8000003c:	0062f2b3          	and	t0,t0,t1
+80000040:	00002337          	lui	t1,0x2
+80000044:	0062e2b3          	or	t0,t0,t1
+80000048:	30029073          	csrw	mstatus,t0
+8000004c:	30002e73          	csrr	t3,mstatus
+80000050:	00de5e93          	srli	t4,t3,0xd
+80000054:	003efe93          	andi	t4,t4,3
+80000058:	00100f13          	li	t5,1
+8000005c:	05ee9263          	bne	t4,t5,800000a0 <fail_fs_clean>
+80000060:	01fe5f93          	srli	t6,t3,0x1f
+80000064:	020f9e63          	bnez	t6,800000a0 <fail_fs_clean>
+80000068:	123452b7          	lui	t0,0x12345
+8000006c:	67828293          	addi	t0,t0,1656 # 12345678 <_start-0x6dcba988>
+80000070:	f0028053          	fmv.w.x	ft0,t0
+80000074:	30002373          	csrr	t1,mstatus
+80000078:	00d35393          	srli	t2,t1,0xd
+8000007c:	0033f393          	andi	t2,t2,3
+80000080:	00300e13          	li	t3,3
+80000084:	01c39e63          	bne	t2,t3,800000a0 <fail_fs_clean>
+80000088:	01f35e93          	srli	t4,t1,0x1f
+8000008c:	000e8a63          	beqz	t4,800000a0 <fail_fs_clean>
+
+80000090 <pass>:
+80000090:	00100193          	li	gp,1
+80000094:	00001297          	auipc	t0,0x1
+80000098:	f632a623          	sw	gp,-148(t0) # 80001000 <tohost>
+8000009c:	ff5ff06f          	j	80000090 <pass>
+
+800000a0 <fail_fs_clean>:
+800000a0:	00200193          	li	gp,2
+800000a4:	00001297          	auipc	t0,0x1
+800000a8:	f432ae23          	sw	gp,-164(t0) # 80001000 <tohost>
+800000ac:	ff5ff06f          	j	800000a0 <fail_fs_clean>
+800000b0:	00000013          	nop
+800000b4:	00000013          	nop
+800000b8:	00000013          	nop
+800000bc:	00000013          	nop
+800000c0:	00000013          	nop
+
+Disassembly of section .tohost:
+
+80001000 <tohost>:
+	...
+
+80001040 <fromhost>:
+	...
+
+Disassembly of section .riscv.attributes:
+
+00000000 <.riscv.attributes>:
+   0:	6241                	.insn	2, 0x6241
+   2:	0000                	.insn	2, 0x0000
+   4:	7200                	.insn	2, 0x7200
+   6:	7369                	.insn	2, 0x7369
+   8:	01007663          	bgeu	zero,a6,14 <_start-0x7fffffec>
+   c:	0058                	.insn	2, 0x0058
+   e:	0000                	.insn	2, 0x0000
+  10:	7205                	.insn	2, 0x7205
+  12:	3376                	.insn	2, 0x3376
+  14:	6932                	.insn	2, 0x6932
+  16:	7032                	.insn	2, 0x7032
+  18:	5f31                	.insn	2, 0x5f31
+  1a:	326d                	.insn	2, 0x326d
+  1c:	3070                	.insn	2, 0x3070
+  1e:	615f 7032 5f31      	.insn	6, 0x5f317032615f
+  24:	3266                	.insn	2, 0x3266
+  26:	3270                	.insn	2, 0x3270
+  28:	645f 7032 5f32      	.insn	6, 0x5f327032645f
+  2e:	697a                	.insn	2, 0x697a
+  30:	32727363          	bgeu	tp,t2,356 <_start-0x7ffffcaa>
+  34:	3070                	.insn	2, 0x3070
+  36:	7a5f 6669 6e65      	.insn	6, 0x6e6566697a5f
+  3c:	32696563          	bltu	s2,t1,366 <_start-0x7ffffc9a>
+  40:	3070                	.insn	2, 0x3070
+  42:	7a5f 6d6d 6c75      	.insn	6, 0x6c756d6d7a5f
+  48:	7031                	.insn	2, 0x7031
+  4a:	5f30                	.insn	2, 0x5f30
+  4c:	617a                	.insn	2, 0x617a
+  4e:	6d61                	.insn	2, 0x6d61
+  50:	3070316f          	jal	sp,3b56 <_start-0x7fffc4aa>
+  54:	7a5f 6c61 7372      	.insn	6, 0x73726c617a5f
+  5a:	30703163          	.insn	4, 0x30703163
+  5e:	0800                	.insn	2, 0x0800
+  60:	0a01                	.insn	2, 0x0a01
+  62:	0b                	.byte	0x0b
